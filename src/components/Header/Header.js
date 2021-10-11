@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import header from '../../images/header.png';
 import logo from '../../images/icons/logo.png';
+import useFirebase from '../../hooks/useFirebase';
 
 const Header = () => {
+    const {user, logOut} = useFirebase();
     return (
         <div style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${header})` }} className="header">
             <nav className="nav">
@@ -16,11 +18,18 @@ const Header = () => {
                         <Link to="/home">Home</Link>
                     </li>
                     <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li>
                         <Link className="btn-book" to="/book">Book</Link>
                     </li>
+                    
+                    <li>
+                        {user.email && <span style={{color: 'white', fontWeight: 'bold'}}> Hello {user.displayName}</span>}
+                        {user.email ?
+                        <button onClick={logOut}>Log out</button>
+                    :
+                    <Link to="/login">Login</Link>
+                    }
+                    </li>
+                    
                 </ul>
             </nav>
             <div className="title-container">
